@@ -1,24 +1,24 @@
-#The MIT License (MIT)
+# The MIT License (MIT)
 #
-#Copyright (c) 2016 G. Völkl
+# Copyright (c) 2016 G. Völkl
 #
-#Permission is hereby granted, free of charge, to any person obtaining a copy
-#of this software and associated documentation files (the "Software"), to deal
-#in the Software without restriction, including without limitation the rights
-#to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-#copies of the Software, and to permit persons to whom the Software is
-#furnished to do so, subject to the following conditions:
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
 #
-#The above copyright notice and this permission notice shall be included in all
-#copies or substantial portions of the Software.
+# The above copyright notice and this permission notice shall be included in all
+# copies or substantial portions of the Software.
 #
-#THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-#IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-#FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-#AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-#LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-#OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-#SOFTWARE.
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
 import random
 import time
 
@@ -28,12 +28,13 @@ from pythonosc import udp_client
 __debug = False
 
 
-## Base Classes ##
+# Base Classes
 
 class Synth:
     """
     Synthesizer
     """
+
     def __init__(self, name):
         self.name = name
 
@@ -42,6 +43,7 @@ class Sample:
     """
     Sample
     """
+
     def __init__(self, name):
         self.name = name
 
@@ -50,12 +52,14 @@ class ChordQuality:
     """
     Chord Quality
     """
+
     def __init__(self, name, inter):
         self.name = name
         self.inter = inter
 
 
-## Notes ##
+# Notes
+B2 = 35
 C2 = 36
 Cs2 = 37
 Db2 = Cs2
@@ -128,7 +132,7 @@ C6 = 84
 
 R = 0
 
-## Synthezier ##
+# Synthezier
 DULL_BELL = Synth('dull_bell')
 PRETTY_BELL = Synth('pretty_bell')
 SQUARE = Synth('square')
@@ -165,7 +169,7 @@ SAW = Synth('saw')
 BEEP = Synth('beep')
 TRI = Synth('tri')
 
-## Scale Mode (from sonic pi)##
+# Scale Mode (from sonic pi)#
 DIATONIC = 'diatonic'
 IONIAN = 'ionian'
 MAJOR = 'major'
@@ -253,28 +257,28 @@ _SCALE_MODE = {
     'diatonic': _ionian_sequence,
     'ionian': _ionian_sequence,
     'major': _ionian_sequence,
-    'dorian': _ionian_sequence[1:]+_ionian_sequence[:1], #rotate 1
-    'phrygian': _ionian_sequence[2:]+_ionian_sequence[:2], #rotate(2)
-    'lydian': _ionian_sequence[3:]+_ionian_sequence[:3], #rotate(3)
-    'mixolydian': _ionian_sequence[4:]+_ionian_sequence[:4], #rotate(4)
-    'aeolian': _ionian_sequence[5:]+_ionian_sequence[:5], #rotate(5)
-    'minor': _ionian_sequence[5:]+_ionian_sequence[:5], #rotate(5)
-    'locrian': _ionian_sequence[6:]+_ionian_sequence[:6], #rotate(6)
+    'dorian': _ionian_sequence[1:] + _ionian_sequence[:1],  # rotate 1
+    'phrygian': _ionian_sequence[2:] + _ionian_sequence[:2],  # rotate(2)
+    'lydian': _ionian_sequence[3:] + _ionian_sequence[:3],  # rotate(3)
+    'mixolydian': _ionian_sequence[4:] + _ionian_sequence[:4],  # rotate(4)
+    'aeolian': _ionian_sequence[5:] + _ionian_sequence[:5],  # rotate(5)
+    'minor': _ionian_sequence[5:] + _ionian_sequence[:5],  # rotate(5)
+    'locrian': _ionian_sequence[6:] + _ionian_sequence[:6],  # rotate(6)
     'hex_major6': _hex_sequence,
-    'hex_dorian': _hex_sequence[1:]+_hex_sequence[:1], #rotate(1)
-    'hex_phrygian': _hex_sequence[2:]+_hex_sequence[:2], #rotate(2)
-    'hex_major7': _hex_sequence[3:]+_hex_sequence[:3], #rotate(3)
-    'hex_sus': _hex_sequence[4:]+_hex_sequence[:4], #rotate(4)
-    'hex_aeolian': _hex_sequence[5:]+_hex_sequence[:5], #rotate(5)
+    'hex_dorian': _hex_sequence[1:] + _hex_sequence[:1],  # rotate(1)
+    'hex_phrygian': _hex_sequence[2:] + _hex_sequence[:2],  # rotate(2)
+    'hex_major7': _hex_sequence[3:] + _hex_sequence[:3],  # rotate(3)
+    'hex_sus': _hex_sequence[4:] + _hex_sequence[:4],  # rotate(4)
+    'hex_aeolian': _hex_sequence[5:] + _hex_sequence[:5],  # rotate(5)
     'minor_pentatonic': _pentatonic_sequence,
     'yu': _pentatonic_sequence,
-    'major_pentatonic': _pentatonic_sequence[1:]+_pentatonic_sequence[:1], #rotate(1)
-    'gong': _pentatonic_sequence[1:]+_pentatonic_sequence[:1], #rotate(1)
-    'egyptian': _pentatonic_sequence[2:]+_pentatonic_sequence[:2], #rotate(2)
-    'shang': _pentatonic_sequence[2:]+_pentatonic_sequence[:2], #rotate(2)
-    'jiao': _pentatonic_sequence[3:]+_pentatonic_sequence[:3], #rotate(3)
-    'zhi': _pentatonic_sequence[4:]+_pentatonic_sequence[:4], #rotate(4)
-    'ritusen': _pentatonic_sequence[4:]+_pentatonic_sequence[:4], #rotate(4)
+    'major_pentatonic': _pentatonic_sequence[1:] + _pentatonic_sequence[:1],  # rotate(1)
+    'gong': _pentatonic_sequence[1:] + _pentatonic_sequence[:1],  # rotate(1)
+    'egyptian': _pentatonic_sequence[2:] + _pentatonic_sequence[:2],  # rotate(2)
+    'shang': _pentatonic_sequence[2:] + _pentatonic_sequence[:2],  # rotate(2)
+    'jiao': _pentatonic_sequence[3:] + _pentatonic_sequence[:3],  # rotate(3)
+    'zhi': _pentatonic_sequence[4:] + _pentatonic_sequence[:4],  # rotate(4)
+    'ritusen': _pentatonic_sequence[4:] + _pentatonic_sequence[:4],  # rotate(4)
     'whole_tone': [2, 2, 2, 2, 2, 2],
     'whole': [2, 2, 2, 2, 2, 2],
     'chromatic': [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
@@ -322,15 +326,15 @@ _SCALE_MODE = {
     'chinese': [4, 2, 1, 4, 1],
     'lydian_minor': [2, 2, 2, 1, 1, 2, 2],
     'i': _ionian_sequence,
-    'ii': _ionian_sequence[1:]+_ionian_sequence[:1], #rotate(1)
-    'iii': _ionian_sequence[2:]+_ionian_sequence[:2], #rotate(2)
-    'iv': _ionian_sequence[3:]+_ionian_sequence[:3], #rotate(3)
-    'v': _ionian_sequence[4:]+_ionian_sequence[:4], #rotate(4)
-    'vi': _ionian_sequence[5:]+_ionian_sequence[:5], #rotate(5)
-    'vii': _ionian_sequence[6:]+_ionian_sequence[:6], #rotate(6),
-    'viii': _ionian_sequence[7:]+_ionian_sequence[:7]} #rotate(7)
+    'ii': _ionian_sequence[1:] + _ionian_sequence[:1],  # rotate(1)
+    'iii': _ionian_sequence[2:] + _ionian_sequence[:2],  # rotate(2)
+    'iv': _ionian_sequence[3:] + _ionian_sequence[:3],  # rotate(3)
+    'v': _ionian_sequence[4:] + _ionian_sequence[:4],  # rotate(4)
+    'vi': _ionian_sequence[5:] + _ionian_sequence[:5],  # rotate(5)
+    'vii': _ionian_sequence[6:] + _ionian_sequence[:6],  # rotate(6),
+    'viii': _ionian_sequence[7:] + _ionian_sequence[:7]}  # rotate(7)
 
-## Chord Quality (from sonic pi) ##
+# Chord Quality (from sonic pi)
 MAJOR7 = "major7"
 DOM7 = "dom7"
 MINOR7 = "minor7"
@@ -394,9 +398,9 @@ _CHORD_QUALITY = {
     "diminished7": [0, 3, 6, 9],
     "i7": [0, 3, 6, 9]}
 
-## Sample ##
+# Sample ##
 
-## Drum Sounds
+# Drum Sounds
 DRUM_HEAVY_KICK = Sample('drum_heavy_kick')
 DRUM_TOM_MID_SOFT = Sample('drum_tom_mid_soft')
 DRUM_TOM_MID_HARD = Sample('drum_tom_mid_hard')
@@ -416,7 +420,7 @@ DRUM_CYMBAL_PEDAL = Sample('drum_cymbal_pedal')
 DRUM_BASS_SOFT = Sample('drum_bass_soft')
 DRUM_BASS_HARD = Sample('drum_bass_hard')
 
-## Electric Sounds
+# Electric Sounds
 ELEC_TRIANGLE = Sample('elec_triangle')
 ELEC_SNARE = Sample('elec_snare')
 ELEC_LO_SNARE = Sample('elec_lo_snare')
@@ -443,18 +447,18 @@ ELEC_TWIP = Sample('elec_twip')
 ELEC_PLIP = Sample('elec_plip')
 ELEC_BLUP = Sample('elec_blup')
 
-## Sounds featuring guitars
+# Sounds featuring guitars
 GUIT_HARMONICS = Sample('guit_harmonics')
 GUIT_E_FIFTHS = Sample('guit_e_fifths')
 GUIT_E_SLIDE = Sample('guit_e_slide')
 
-## Miscellaneous Sounds
+# Miscellaneous Sounds
 MISC_BURP = Sample('misc_burp')
 
-## Percurssive Sounds
+# Percussion Sounds
 PERC_BELL = Sample('perc_bell')
 
-## Ambient Sounds
+# Ambient Sounds
 AMBI_SOFT_BUZZ = Sample('ambi_soft_buzz')
 AMBI_SWOOSH = Sample('ambi_swoosh')
 AMBI_DRONE = Sample('ambi_drone')
@@ -466,7 +470,7 @@ AMBI_LUNAR_LAND = Sample('ambi_lunar_land')
 AMBI_DARK_WOOSH = Sample('ambi_dark_woosh')
 AMBI_CHOIR = Sample('ambi_choir')
 
-## Bass Sounds
+# Bass Sounds
 BASS_HIT_C = Sample('bass_hit_c')
 BASS_HARD_C = Sample('bass_hard_c')
 BASS_THICK_C = Sample('bass_thick_c')
@@ -489,20 +493,26 @@ BD_TEK = Sample('bd_tek')
 BD_ZOME = Sample('bd_zome')
 BD_ZUM = Sample('bd_zum')
 
-## Sounds for Looping
+# Sounds for Looping
 LOOP_INDUSTRIAL = Sample('loop_industrial')
 LOOP_COMPUS = Sample('loop_compus')
 LOOP_AMEN = Sample('loop_amen')
 LOOP_AMEN_FULL = Sample('loop_amen_full')
 
-## Module attributes ##
+# Module attributes
 _current_synth = BEEP
+_fx_list = []
 
 
-## Module methodes ##
+# Module methodes
 def use_synth(synth):
     global _current_synth
     _current_synth = synth
+
+
+def use_fx(fx_list):
+    global _fx_list
+    _fx_list = fx_list
 
 
 def play(note, attack=None, decay=None, sustain_level=None, sustain=None, release=None, cutoff=None,
@@ -526,6 +536,10 @@ def play(note, attack=None, decay=None, sustain_level=None, sustain=None, releas
     command = 'play {0}{1}'.format(note, parameter)
 
     command = 'use_synth :{0}\n'.format(_current_synth.name) + command
+
+    for fx in _fx_list:
+        command = 'with_fx :{0} do\n{1}\nend'.format(fx, command)
+
     _debug('play command={}'.format(command))
     synthServer.run(command)
 
@@ -542,7 +556,7 @@ def play_pattern_timed(notes, times, release=None):
 
     for t in times:
         for i in notes:
-            play(i,release=release)
+            play(i, release=release)
             sleep(t)
 
 
@@ -575,6 +589,9 @@ def sample(sample, rate=None, attack=None, sustain=None, release=None, start=Non
         command = 'sample :{0}{1}'.format(sample.name, parameter)
     else:
         command = 'sample "{0}"{1}'.format(sample, parameter)
+
+    for fx in _fx_list:
+        command = 'with_fx :{0} do\n{1}\nend'.format(fx, command)
 
     _debug('sample command={}'.format(command))
     synthServer.run(command)
@@ -642,7 +659,8 @@ def scale(root_note, scale_mode, num_octaves=1):
 
     return result
 
-## Compound classes ##
+
+# Compound classes
 
 class Ring:
     """
@@ -666,7 +684,7 @@ class Ring:
         return random.choice(self.data)
 
 
-## Connection classes ##
+# Connection classes
 
 class SonicPi():
     """
@@ -706,10 +724,11 @@ class SonicPi():
 synthServer = SonicPi()
 
 
-## system functions ##
+# system functions
 
 def _debug(*allargs):  # simple debug function for working in different environments
     if __debug: print(allargs)
+
 
 if __name__ == '__main__':
     use_synth(SAW)
